@@ -1,4 +1,13 @@
-#bgCanvas {
-    height: 400px;
-    width: 500px;
+#backgroundCanvas {
+    left: 0;
+    position: absolute;
+    top: 0;
+    
+    background: #000;
+}
+
+#playerCanvas {
+    left: 0;
+    position: absolute;
+    top: 0;
 }
