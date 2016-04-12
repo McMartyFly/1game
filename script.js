@@ -10,8 +10,10 @@ $( document ).ready(function() {
         x: 150,
         y: 150,
         size: 50,
-        speed: 5
+        vspeed: 5,
+        hspeed: 5
     }
+    
     
     game.mouse = {
         x: 0,
@@ -22,8 +24,8 @@ $( document ).ready(function() {
     $(document).mousemove(function(e){
         game.mouse.x = e.pageX;
         game.mouse.y = e.pageY;
-        console.log("x:" + e.pageX);
-        console.log("y:" + e.pageY);
+        // console.log("x:" + e.pageX);
+        // console.log("y:" + e.pageY);
     });
     
     
@@ -82,12 +84,34 @@ $( document ).ready(function() {
       ys = point2.y - point1.y;
       ys = ys * ys;
  
-      return Math.sqrt( xs + ys );
+      // return Math.sqrt( xs + ys );
+      console.log(Math.sqrt( xs + ys ));
     }
     
 // MAIN GAME BRAIN
     // deals with game logic
     function update(){
+        // FIGURING OUT SLOPE BETWEEN PLAYER AND MOUSE
+        x1 = game.player.x + game.player.size/2;
+        x2 = game.mouse.x;
+        
+        y1 = game.player.y + game.player.size/2;
+        y2 = game.mouse.y;
+        
+        vs = (y2 - y1)/20;
+        hs = (x2 - x1)/20;
+        
+        
+        console.log("v:" + vs);
+        console.log("h:" + hs);
+        console.log("#######");
+    
+        game.player.x += hs/2;
+        game.player.y += vs/2;
+        lineDistance(game.player, game.mouse);
+        
+        
+        
         
         
         // star position
@@ -143,10 +167,11 @@ $( document ).ready(function() {
         game.contextPlayer.fillStyle = '#ff0000';
         game.contextPlayer.fillRect(game.player.x, game.player.y, game.player.size, game.player.size);
         
-        game.contextPlayer.beginPath();
-        game.contextPlayer.moveTo(game.player.x, game.player.y);
-        game.contextPlayer.lineTo(game.mouse.x, game.mouse.y)
-        game.contextPlayer.stroke();
+        // DRAWING LINE BETWEEN PLAYER AND MOUSE
+        // game.contextPlayer.beginPath();
+//         game.contextPlayer.moveTo(game.player.x, game.player.y);
+//         game.contextPlayer.lineTo(game.mouse.x, game.mouse.y)
+//         game.contextPlayer.stroke();
     };
 
     // looper
