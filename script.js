@@ -13,6 +13,20 @@ $( document ).ready(function() {
         speed: 5
     }
     
+    game.mouse = {
+        x: 0,
+        y: 0
+    }
+    
+    // mouse detection
+    $(document).mousemove(function(e){
+        game.mouse.x = e.pageX;
+        game.mouse.y = e.pageY;
+        console.log("x:" + e.pageX);
+        console.log("y:" + e.pageY);
+    });
+    
+    
     // floating stars array
     game.stars = [];
 
@@ -27,15 +41,7 @@ $( document ).ready(function() {
         delete game.keys[e.keyCode ? e.keyCode : e.which];
     });
 
-    game.mousex = 0;
-    game.mousey = 0;
-    // mouse detection
-    $(document).mousemove(function(e){
-        game.mousex = e.pageX;
-        game.mousey = e.pageY;
-        console.log("x:" + e.pageX);
-        console.log("y:" + e.pageY);
-    });
+    
 
     game.contextBackground = document.getElementById('backgroundCanvas').getContext('2d');
     game.contextPlayer     = document.getElementById('playerCanvas').getContext('2d');
@@ -85,25 +91,15 @@ $( document ).ready(function() {
         
         
         // star position
-        addStars(1);
-        for(i in game.stars){
-            if(game.stars[i].y <= -10){
-                game.stars.splice(i,1);
-            }
-            game.stars[i].y--;
-        }
+        // addStars(1);
+//         for(i in game.stars){
+//             if(game.stars[i].y <= -10){
+//                 game.stars.splice(i,1);
+//             }
+//             game.stars[i].y--;
+//         }
         
-        if((game.player.x + game.player.size/2) - game.mousex < 0){
-            game.player.x += game.player.speed;
-        } else if((game.player.x + game.player.size/2) - game.mousex > 0){
-            game.player.x -= game.player.speed;
-        }
         
-        if((game.player.y + game.player.size/2) - game.mousey < 0){
-            game.player.y += game.player.speed;
-        } else if((game.player.y + game.player.size/2) - game.mousey > 0){
-            game.player.y -= game.player.speed;
-        }
         
         
         // // player position
@@ -135,17 +131,22 @@ $( document ).ready(function() {
         
         // rendering stars
         // SET COLOR FOR EACH OBJECT RENDERED IN CANVAS
-        game.contextBackground.clearRect(0,0,game.width,game.height);
-        game.contextBackground.fillStyle = '#ffffff';
-        for(i in game.stars){
-            var star = game.stars[i];
-            game.contextBackground.fillRect(star.x, star.y, star.size, star.size);
-        }
+        // game.contextBackground.clearRect(0,0,game.width,game.height);
+        // game.contextBackground.fillStyle = '#ffffff';
+//         for(i in game.stars){
+//             var star = game.stars[i];
+//             game.contextBackground.fillRect(star.x, star.y, star.size, star.size);
+//         }
         
         // rendering player
         game.contextPlayer.clearRect(0,0,game.width,game.height);
         game.contextPlayer.fillStyle = '#ff0000';
         game.contextPlayer.fillRect(game.player.x, game.player.y, game.player.size, game.player.size);
+        
+        game.contextPlayer.beginPath();
+        game.contextPlayer.moveTo(game.player.x, game.player.y);
+        game.contextPlayer.lineTo(game.mouse.x, game.mouse.y)
+        game.contextPlayer.stroke();
     };
 
     // looper
