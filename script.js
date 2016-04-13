@@ -2,7 +2,7 @@ $( document ).ready(function() {
 
     // game object
     var game = {};
-    game.width = 550;
+    game.width = 800;
     game.height = 600;
     
     // player object
@@ -100,15 +100,9 @@ $( document ).ready(function() {
         
         vs = (y2 - y1)/20;
         hs = (x2 - x1)/20;
-        
-        
-        console.log("v:" + vs);
-        console.log("h:" + hs);
-        console.log("#######");
-    
+
         game.player.x += hs/2;
         game.player.y += vs/2;
-        lineDistance(game.player, game.mouse);
         
         
         
