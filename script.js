@@ -20,6 +20,7 @@ $( document ).ready(function() {
         y: 0
     }
     
+    
     // mouse detection
     $(document).mousemove(function(e){
         game.mouse.x = e.pageX;
@@ -42,8 +43,6 @@ $( document ).ready(function() {
     $(document).keyup(function(e){
         delete game.keys[e.keyCode ? e.keyCode : e.which];
     });
-
-    
 
     game.contextBackground = document.getElementById('backgroundCanvas').getContext('2d');
     game.contextPlayer     = document.getElementById('playerCanvas').getContext('2d');
@@ -136,6 +135,20 @@ $( document ).ready(function() {
 //             // down
 //             game.player.y += 2;
 //         }
+        
+        // KEEPING THE PLAYER ON THE SCREEN
+        if(game.player.x > (game.width - game.player.size)){
+            game.player.x = game.width - game.player.size;
+        } else if (game.player.x < 0){
+            game.player.x = 0;
+        };
+        
+        if(game.player.y > (game.height - game.player.size)){
+            game.player.y = game.height - game.player.size;
+        } else if (game.player.y < 0){
+            game.player.y = 0;
+        }
+        
         
     };
     
