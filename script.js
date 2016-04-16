@@ -11,7 +11,8 @@ $( document ).ready(function() {
         y: 150,
         size: 50,
         vspeed: 5,
-        hspeed: 5
+        hspeed: 5,
+        rot: 0
     }
     
     
@@ -20,11 +21,11 @@ $( document ).ready(function() {
         y: 0
     }
     
-    
     // mouse detection
     $(document).mousemove(function(e){
         game.mouse.x = e.pageX;
         game.mouse.y = e.pageY;
+        game.player.rot = Math.atan2(game.mouse.y - game.player.y, game.mouse.x - game.player.x);
         // console.log("x:" + e.pageX);
         // console.log("y:" + e.pageY);
     });
@@ -100,6 +101,7 @@ $( document ).ready(function() {
         vs = (y2 - y1)/20;
         hs = (x2 - x1)/20;
 
+        // MOVES THE PLAYER BASED ON SLOPE TO MOUSE
         game.player.x += hs/2;
         game.player.y += vs/2;
         
@@ -119,11 +121,12 @@ $( document ).ready(function() {
         
         
         
-        // // player position
-//         if(game.keys[37]){
-//             // left
-//             game.player.x -= 2;
-//         } else if(game.keys[39]){
+        // player position
+        if(game.keys[37]){
+            // left
+            
+            // game.player.x -= 2;
+        } // else if(game.keys[39]){
 //             // right
 //             game.player.x += 2;
 //         }
@@ -171,9 +174,13 @@ $( document ).ready(function() {
         
         // rendering player
         game.contextPlayer.clearRect(0,0,game.width,game.height);
-        game.contextPlayer.fillStyle = '#ff0000';
-        game.contextPlayer.fillRect(game.player.x, game.player.y, game.player.size, game.player.size);
+        game.contextPlayer.save();
+        game.contextPlayer.translate(game.player.x + game.player.size/2, game.player.y + game.player.size/2);
+        game.contextPlayer.rotate(game.player.rot);
         
+        game.contextPlayer.fillStyle = '#ff0000';
+        game.contextPlayer.fillRect((game.player.size/2)*-1, (game.player.size/2)*-1, game.player.size, game.player.size);
+        game.contextPlayer.restore();
         // DRAWING LINE BETWEEN PLAYER AND MOUSE
         // game.contextPlayer.beginPath();
 //         game.contextPlayer.moveTo(game.player.x, game.player.y);
