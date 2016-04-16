@@ -26,6 +26,7 @@ $( document ).ready(function() {
         game.mouse.x = e.pageX;
         game.mouse.y = e.pageY;
         game.player.rot = Math.atan2(game.mouse.y - (game.player.y + game.player.size/2), game.mouse.x - (game.player.x + game.player.size/2));
+        console.log(game.player.rot);
         // console.log("x:" + e.pageX);
         // console.log("y:" + e.pageY);
     });
@@ -98,8 +99,9 @@ $( document ).ready(function() {
         y1 = game.player.y + game.player.size/2;
         y2 = game.mouse.y;
         
-        vs = (y2 - y1)/20;
-        hs = (x2 - x1)/20;
+        vs = (y2 - y1)/17;
+        // changing the size of the fraction changes acceleration. higher number, slower moving
+        hs = (x2 - x1)/17;
 
         // MOVES THE PLAYER BASED ON SLOPE TO MOUSE
         game.player.x += hs/2;
@@ -122,11 +124,10 @@ $( document ).ready(function() {
         
         
         // player position
-        if(game.keys[37]){
-            // left
-            
-            // game.player.x -= 2;
-        } // else if(game.keys[39]){
+//         if(game.keys[37]){
+//             // left
+//             game.player.x -= 2;
+//         } else if(game.keys[39]){
 //             // right
 //             game.player.x += 2;
 //         }
@@ -174,12 +175,28 @@ $( document ).ready(function() {
         
         // rendering player
         game.contextPlayer.clearRect(0,0,game.width,game.height);
+        
+        // SAVES ORIGINAL ORIENTATION OF CANVAS
         game.contextPlayer.save();
+        
+        // MOVES THE CONTEXT TO THE CENTER OF THE PLAYER OBJECT
         game.contextPlayer.translate(game.player.x + game.player.size/2, game.player.y + game.player.size/2);
+        
+        // SETS THE ROTATION IN RADIANS
+           // -1.5
+    //     -3       0
+    //         1.5
+        
+        // ACTUALLY DOES THE ROTATION
         game.contextPlayer.rotate(game.player.rot);
         
+        // DRAWS THE PLAYER OBJECT RELATIVE TO THE NEW CANVAS ORIENTATION
         game.contextPlayer.fillStyle = '#ff0000';
         game.contextPlayer.fillRect((game.player.size/2)*-1, (game.player.size/2)*-1, game.player.size, game.player.size);
+        game.contextPlayer.fillStyle = '#ffff00';
+        game.contextPlayer.fillRect(game.player.size/2 -5, -2.5, 5, 5);
+        
+        // RESTORES ORIGINAL CANVAS ORIENTATION
         game.contextPlayer.restore();
         // DRAWING LINE BETWEEN PLAYER AND MOUSE
         // game.contextPlayer.beginPath();
