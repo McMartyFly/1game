@@ -17,15 +17,15 @@ $( document ).ready(function() {
     
     
     game.mouse = {
-        x: 0,
-        y: 0
+        x: game.player.x + game.player.size/2,
+        y: game.player.y + game.player.size/2
     }
     
     // mouse detection
     $(document).mousemove(function(e){
         game.mouse.x = e.pageX;
         game.mouse.y = e.pageY;
-        game.player.rot = Math.atan2(game.mouse.y - game.player.y, game.mouse.x - game.player.x);
+        game.player.rot = Math.atan2(game.mouse.y - (game.player.y + game.player.size/2), game.mouse.x - (game.player.x + game.player.size/2));
         // console.log("x:" + e.pageX);
         // console.log("y:" + e.pageY);
     });
