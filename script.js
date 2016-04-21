@@ -15,6 +15,13 @@ $( document ).ready(function() {
         rot: 0
     }
     
+    game.npc = {
+        x: 250,
+        y: 250,
+        size: 20,
+        col: 0
+    }
+    
     
     game.mouse = {
         x: game.player.x + game.player.size/2,
@@ -48,6 +55,7 @@ $( document ).ready(function() {
 
     game.contextBackground = document.getElementById('backgroundCanvas').getContext('2d');
     game.contextPlayer     = document.getElementById('playerCanvas').getContext('2d');
+    game.contextNpc        = document.getElementById('npcCanvas').getContext('2d');
     
     // shim layer with setTimeout fallback
     window.requestAnimFrame = (function(){
@@ -153,14 +161,24 @@ $( document ).ready(function() {
             game.player.y = 0;
         }
         
-        
+        if(collision(game.player, game.npc)){
+            game.npc.col = 1;
+        } else {
+            game.npc.col = 0;
+        };
     };
     
     // renders to screen
     function render(){
         
         // MAKE SURE TO CLEAR AND SET COLOR FOR EACH ITEM IN BACKGROUNDCONTEXT
-        
+        game.contextNpc.clearRect(0,0,game.width,game.height);
+        if(game.npc.col == 0){
+            game.contextNpc.fillStyle = '#149dca';
+        } else {
+            game.contextNpc.fillStyle = '#ffff00';
+        }
+        game.contextNpc.fillRect(game.npc.x, game.npc.y, game.npc.size, game.npc.size);
         
         
         
@@ -204,7 +222,15 @@ $( document ).ready(function() {
 //         game.contextPlayer.lineTo(game.mouse.x, game.mouse.y)
 //         game.contextPlayer.stroke();
     };
-
+    
+    // collision detection
+    function collision(first, second){
+        return !(first.x > second.x + second.size ||
+            first.x + first.size < second.x ||
+            first.y > second.y + second.size ||
+            first.y + first.size < second.y);
+    }
+    
     // looper
     function loop(){
         requestAnimFrame(function(){
