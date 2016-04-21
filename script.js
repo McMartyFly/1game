@@ -15,14 +15,6 @@ $( document ).ready(function() {
         rot: 0
     }
     
-    game.npc = {
-        x: 250,
-        y: 250,
-        size: 20,
-        col: 0
-    }
-    
-    
     game.mouse = {
         x: game.player.x + game.player.size/2,
         y: game.player.y + game.player.size/2
@@ -38,9 +30,10 @@ $( document ).ready(function() {
         // console.log("y:" + e.pageY);
     });
     
-    
+    // LIST ALL ARRAYS
     // floating stars array
     game.stars = [];
+    game.fish1 = [];
 
     // buttons array
     game.keys = [];
@@ -69,7 +62,17 @@ $( document ).ready(function() {
                 // running 60 frames per second
               };
     })();
-
+    
+    function addFish1(){
+        game.fish1.push({
+            x: 0,
+            y: Math.random() * game.height,
+            size: 20,
+            speed: 3,
+            col: 0
+        })
+    }
+    
     function addStars(num){
         for(i = 0; i < num; i++){
             game.stars.push({
@@ -100,6 +103,9 @@ $( document ).ready(function() {
 // MAIN GAME BRAIN
     // deals with game logic
     function update(){
+        // CHECKING ARRAYS
+        console.log(game.fish1.length);
+        
         // FIGURING OUT SLOPE BETWEEN PLAYER AND MOUSE
         x1 = game.player.x + game.player.size/2;
         x2 = game.mouse.x;
@@ -116,8 +122,19 @@ $( document ).ready(function() {
         game.player.y += vs/2;
         
         
-        
-        
+        // fish1 position
+        addFish1();
+        for(i in game.fish1){
+            game.fish1[i].x += game.fish1[i].speed;
+            if(collision(game.player, game.fish1[i])){
+                game.fish1[i].col = 1;
+            } else {
+                game.fish1[i].col = 0;
+            }
+            if(game.fish1[i].x > game.width){
+                game.fish1.splice(i, 1);
+            }
+        }
         
         // star position
         // addStars(1);
@@ -161,11 +178,6 @@ $( document ).ready(function() {
             game.player.y = 0;
         }
         
-        if(collision(game.player, game.npc)){
-            game.npc.col = 1;
-        } else {
-            game.npc.col = 0;
-        };
     };
     
     // renders to screen
@@ -173,12 +185,16 @@ $( document ).ready(function() {
         
         // MAKE SURE TO CLEAR AND SET COLOR FOR EACH ITEM IN BACKGROUNDCONTEXT
         game.contextNpc.clearRect(0,0,game.width,game.height);
-        if(game.npc.col == 0){
-            game.contextNpc.fillStyle = '#149dca';
-        } else {
-            game.contextNpc.fillStyle = '#ffff00';
+        
+        for(i in game.fish1){
+            var fish1 = game.fish1[i];
+            if(game.fish1[i].col == 1){
+                game.contextNpc.fillStyle = '#ffff00';
+            } else {
+                game.contextNpc.fillStyle = '#149dca';
+            }
+            game.contextNpc.fillRect(fish1.x, fish1.y, fish1.size, fish1.size);
         }
-        game.contextNpc.fillRect(game.npc.x, game.npc.y, game.npc.size, game.npc.size);
         
         
         
